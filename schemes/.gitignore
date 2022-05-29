@@ -1,0 +1,5 @@
+*
+!.gitignore
+!cubingrf-badge.scm
+!cubingrf-diploma.scm
+!cubingrf-certificate.scm

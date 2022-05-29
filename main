@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+
+import csv
+import subprocess
+from os.path import realpath, dirname
+from optparse import OptionParser
+
+
+def get_options():
+    parser = OptionParser()
+
+    parser.add_option("-s", "--source", dest="csv",
+                      default=realpath("./csv/example.csv"), help="source CSV file")
+
+    parser.add_option("-c", "--columns", dest="columns",
+                      default=None, help="columns in CSV to use (e.g. `1+2,3`)")
+
+    parser.add_option("-t", "--template", dest="template", default=realpath(
+        "./templates/cubingrf_badge_horizontal.xcf"), help="xcf (GIMP) template to use")
+
+    parser.add_option("-g", "--scheme", dest="scheme",
+                      default="cubingrf-badge",
+                      help="scm (GIMP script) scheme to use (name without extension)")
+
+    return parser.parse_args()
+
+
+def main():
+    (options, args) = get_options()
+    scheme = options.scheme
+    template = options.template
+    filename = options.csv
+    columns = list(map(
+        lambda x: list(map(lambda y: int(y), x.split("+"))),
+        options.columns.split(",")
+    )) if options.columns else [[0, 1], [2]]
+
+    shell_args = [
+        "gimp",
+        "-i",
+    ]
+
+    with open(filename, newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        next(reader)
+        for row in reader:
+            cols = []
+            for column in columns:
+                col = []
+                for index in column:
+                    col.append(row[index])
+                col = " ".join(col)
+                col = f'"{col}"'
+                cols.append(col)
+            cols = " ".join(cols)
+            command = f'({scheme} "{template}" {cols})'
+            shell_args.append("-b")
+            shell_args.append(command)
+
+    shell_args.append("-b")
+    shell_args.append("(gimp-quit 0)")
+
+    cwd = dirname(realpath(__file__))
+    subprocess.call(shell_args, cwd=cwd)
+
+
+if __name__ == "__main__":
+    main()

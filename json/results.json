@@ -1,0 +1,21 @@
+[
+    {
+        "id": 1,
+        "competition_id": "test",
+        "event_id": "333_1",
+        "round": 1,
+        "pos": 1,
+        "name": "Имя Фамилия",
+        "fc_id": null,
+        "wca_id": null,
+        "attempts": [
+            3828,
+            3703,
+            4377,
+            3904,
+            3819
+        ],
+        "best": 3703,
+        "average": 3850
+    }
+]
