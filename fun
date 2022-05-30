@@ -65,9 +65,10 @@ def main():
     with open(source_filename, newline='') as json_file:
         results = json.load(json_file)
         for result in results:
-            name = result["name"]
+            name: str = result["name"]
             place = result["pos"]
             discipline = disciplines[result["event_id"]]
+            female = str(name.endswith("ова") or name.endswith("ина")).upper()
 
             time = parse_time(result["average"])
             if time:
@@ -76,7 +77,7 @@ def main():
                 time = parse_time(result["best"])
                 time = f"Bo5: {time}"
 
-            command = f'({scheme} "{template}" "{name}" "{place}" "{discipline}" "{time}")'
+            command = f'({scheme} "{template}" "{name}" "{place}" "{discipline}" "{time}" {female})'
             shell_args.append("-b")
             shell_args.append(command)
 

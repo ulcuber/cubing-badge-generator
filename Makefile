@@ -11,8 +11,9 @@ install:
 all: install run
 
 clean:
-	rm -r ./badges/*
-	rm -r ./diplomas/*
+	rm ./badges/*
+	rm ./diplomas/*
+	rm ./certificates/*
 
 # TODO: combine badges to A4
 # a4:

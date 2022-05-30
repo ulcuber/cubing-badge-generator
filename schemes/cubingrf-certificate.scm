@@ -1,5 +1,5 @@
 (
-    define (cubingrf-certificate filename name place discipline result)
+    define (cubingrf-certificate filename name place discipline result female)
     (let*
         (
             (image
@@ -24,6 +24,23 @@
         (set! layer
             (
                 car (gimp-image-get-layer-by-name image discipline)
+            )
+        )
+        (gimp-item-set-visible layer TRUE)
+        (if (= female TRUE)
+            (begin
+                (set! layer
+                    (
+                        car (gimp-image-get-layer-by-name image "female")
+                    )
+                )
+            )
+            (begin
+                (set! layer
+                    (
+                        car (gimp-image-get-layer-by-name image "male")
+                    )
+                )
             )
         )
         (gimp-item-set-visible layer TRUE)
